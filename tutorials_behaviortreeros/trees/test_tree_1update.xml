@@ -1,0 +1,23 @@
+
+<?xml version="1.0"?>
+<!-- Basic use of the fallback and sequence nodes and decorator node ForceFailure-->
+<!-- In this example, if the number entered is below the threshold, the tree being ticked is changed to the one specified -->
+<root main_tree_to_execute ="Main_Tree">
+	<BehaviorTree ID="Main_Tree">
+		<Sequence>
+			<Action ID="PrintMsg" message="Starting tree"/>
+			<Fallback>
+				<Action ID="IsThisGreaterThan" service_name="tutorials_btros/is_this_greater_than"  threshold="10" user_input='{user_input}' />
+				<ForceFailure>
+					<Sequence>
+						<Action ID="PrintMsg" message="You entered an input lower than the threshold!"/>
+						<Action ID="PrintMsg" message="I am changing to test_tree_2"/>
+						<Action ID="UpdateTree" tree_name="trees/test_tree_2.xml"/> <!--Path relative to package tutorials_BehaviorTree.ROS -->
+					</Sequence>
+				</ForceFailure>
+			</Fallback>
+			<Action ID="PrintMsg" message="You entered an input higher than the threshold!"/>
+			<Action ID="PrintValue" value="{user_input}"/>
+		</Sequence>
+	</BehaviorTree>
+</root>

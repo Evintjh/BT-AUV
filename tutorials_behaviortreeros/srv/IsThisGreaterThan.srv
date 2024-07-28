@@ -1,0 +1,4 @@
+float64 threshold
+---
+bool result
+float64 user_input

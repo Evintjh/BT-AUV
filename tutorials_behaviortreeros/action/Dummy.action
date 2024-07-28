@@ -1,0 +1,10 @@
+#goal definition
+float64 total_time
+float64 period
+---
+#result definition
+bool result
+
+---
+#feedback
+float64 current_time

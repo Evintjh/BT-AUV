@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!-- With the reactive feedback you can run a node continuously while the DUmmy action is RUNNING -->
+<root main_tree_to_execute ="Main_Tree">
+	<BehaviorTree ID="Main_Tree">
+		<Sequence>
+		 	<SetBlackboard output_key="counter" value="0"/>
+		 	<SetBlackboard output_key="thresholdcounter" value="20"/>
+		 	<SetBlackboard output_key="maxcounter" value="40"/>
+		 	<Action ID="PrintMsg" message="Starting tree"/>
+			<Action ID="SearchingTarget"/>
+		 	<ReactiveFallback>
+			  <!-- When the condition changes its state from FAILURE to SUCCESS the counter DummyAction will stop counting-->
+				<Inverter>
+				  <Sequence>
+					  <Action ID="AddTwo" service_name = "tutorials_btros/add_two"	first = "{counter}" second= "1"	sum = "{counter}" />
+					  <Action ID="PrintValue" value="{counter}"/>
+		 			  <Action ID="CompareValues" service_name="tutorials_btros/compare_values"  value1="{thresholdcounter}" value2="{counter}" />
+				  </Sequence>
+			  </Inverter>
+		 		<Action ID="Dummy" server_name="/tutorials_btros/dummy" total_time="{maxcounter}"  period="1" />
+			</ReactiveFallback>
+	    	<Action ID="PrintMsg" message="Counter result is"/>
+			<Action ID="PrintValue" value="{counter}"/>
+		</Sequence>
+	</BehaviorTree>
+</root>

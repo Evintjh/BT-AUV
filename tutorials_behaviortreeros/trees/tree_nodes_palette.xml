@@ -1,0 +1,27 @@
+<root>
+    <TreeNodesModel>
+        <Action ID="AddTwo">
+            <inout_port name="first"/>
+            <inout_port name="second"/>
+            <inout_port name="service_name"/>
+            <inout_port name="sum"/>
+        </Action>
+        <Action ID="Dummy">
+            <inout_port name="period"/>
+            <inout_port name="server_name"/>
+            <inout_port name="total_time"/>
+        </Action>
+        <Action ID="IsThisGreaterThan">
+            <inout_port name="service_name"/>
+            <inout_port name="threshold"/>
+            <inout_port name="user_input"/>
+        </Action>
+        <Action ID="PrintMsg">
+            <inout_port name="message"/>
+        </Action>
+        <Action ID="PrintValue">
+            <inout_port name="message"/>
+        </Action>
+    </TreeNodesModel>
+</root>
+

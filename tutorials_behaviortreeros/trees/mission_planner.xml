@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!-- Mecatron Mission Planner Behavior Tree. Use of Reactive Fallback, Reactive Sequence, Condition and Action Nodes -->
+
+<root main_tree_to_execute ="Main_Tree">
+	<BehaviorTree ID="Main_Tree">
+		<Sequence>
+			<ReactiveSequence>
+				<ReactiveFallback>
+					<Condition ID="ObjDetectedStatus"/>
+					<Inverter>
+						<Action ID="SearchingTarget"/>
+					</Inverter>
+				</ReactiveFallback>
+				<Action ID="CentreingToTarget"/>
+				<Condition ID="ObjCentredStatus"/>
+			</ReactiveSequence>
+
+			<Action ID="MovingArmToTarget" />
+				
+		</Sequence>
+	</BehaviorTree>
+</root>

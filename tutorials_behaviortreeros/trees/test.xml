@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="Main_Tree">
+    <!-- ////////// -->
+    <BehaviorTree ID="Main_Tree">
+        <Sequence>
+            <Action ID="Dummy" period="0.1" server_name="/tutorials_BehaviorTreeROS/dummy" total_time="0.1"/>
+            <Action ID="PrintMsg" message1="Starting tree"/>
+            <RetryUntilSuccessful num_attempts="5">
+                <Fallback>
+                    <Action ID="IsThisGreaterThan" service_name="tutorials_BehaviorTreeROS/is_this_greater_than" threshold="10" user_input="{user_input}"/>
+                    <ForceFailure>
+                        <Action ID="PrintMsg" message1="You entered an input lower than the threshold!"/>
+                    </ForceFailure>
+                </Fallback>
+            </RetryUntilSuccessful>
+            <Action ID="PrintMsg" message1="You entered an input higher than the threshold!"/>
+        </Sequence>
+    </BehaviorTree>
+    <!-- ////////// -->
+    <TreeNodesModel>
+        <Action ID="Dummy">
+            <input_port name="period" type="double"/>
+            <input_port name="server_name" type="std::string">name of the Action Server</input_port>
+            <input_port name="timeout" type="unsigned int">timeout to connect (milliseconds)</input_port>
+            <input_port name="total_time" type="double"/>
+        </Action>
+        <Action ID="IsThisGreaterThan">
+            <input_port name="service_name" type="std::string">name of the ROS service</input_port>
+            <input_port name="threshold" type="double"/>
+            <input_port name="timeout" type="unsigned int">timeout to connect to server (milliseconds)</input_port>
+            <output_port name="user_input" type="double"/>
+        </Action>
+        <Action ID="PrintMsg">
+            <input_port name="message1" type="std::string"/>
+        </Action>
+    </TreeNodesModel>
+    <!-- ////////// -->
+</root>

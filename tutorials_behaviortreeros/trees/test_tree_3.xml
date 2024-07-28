@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- Use of a blackboard, subtree, ports and port remapping -->
+<root main_tree_to_execute ="Main_Tree">
+	<BehaviorTree ID="Add_Tree">
+		<Sequence>
+			<Action ID="AddTwo" service_name = "tutorials_btros/add_two"	first = "{st_value1}" second= "{st_value2}"	sum = "{add_two_result}" />
+      		<Action ID="PrintMsg" message="SUBTREE Add Two Result is"/>
+			<Action ID="PrintValue" value="{add_two_result}"/>
+      		<SetBlackboard output_key="st_result" value="{add_two_result}" />
+		</Sequence>
+	</BehaviorTree>
+
+	<!-- st_value1, st_value2 & st_result become the output of the subtree which can be called as main variables in the main tree, to equate to value in blackboard etc -->
+	<BehaviorTree ID="Main_Tree">
+		<Sequence>
+     <!-- We set two numbers in the blackboard using the key "number_1_on_blackboard" and "number_2_on_blackboard"
+		      to be used in multiple nodes of this main tree as {number_1_on_blackboard} and {number_2_on_blackboard}.
+	        A port remapping is needed to be used in the nodes of a subtree, i.e.:
+					port number_1_on_blackboard is remaped to st_value1, and used as {st_value2} in the nodes of the subtree
+          port number_2_on_blackboard is remaped to st_value2, and used as {st_value2} in the nodes of the subtree
+          port st_result of the subtree is remaped to add_result, and used as {add_result} in the nodes of the main tree-->
+		 	<SetBlackboard output_key="number_1_on_blackboard" value="5"/>
+     		<SetBlackboard output_key="number_2_on_blackboard" value="4"/>
+		 	<SubTree ID="Add_Tree" st_value1="number_1_on_blackboard" st_value2="number_2_on_blackboard" st_result="add_result"/>
+     		<Action ID="PrintMsg" message="MAIN TREE: Add Two Result is"/>
+     		<Action ID="PrintValue" value="{add_result}"/>
+		</Sequence>
+	</BehaviorTree>
+</root>

@@ -1,0 +1,66 @@
+
+<?xml version="1.0"?>
+<!-- Basic use of the fallback and sequence nodes  and decorator node ForceFailure-->
+
+<root main_tree_to_execute ="Main_Tree">
+	<BehaviorTree ID="Main_Tree">
+		<Sequence>
+			<Action ID="PrintMsg" message="Starting tree"/>
+			<Condition ID="BatteryCondition"/>
+			<Action ID="SearchingTarget"/>
+			<Fallback>
+				<Action ID="IsThisGreaterThan" service_name="tutorials_btros/is_this_greater_than"  threshold="10" user_input='{user_input}' />
+				<ForceFailure>
+					<Sequence>
+						<Action ID="PrintMsg" message="You entered an input lower than the threshold!"/>
+						<Action ID="PrintValue" value="{user_input}"/>
+					</Sequence>
+				</ForceFailure>
+			</Fallback>
+			<Action ID="PrintMsg" message="You entered an input higher than the threshold!"/>
+			<Action ID="PrintValue" value="{user_input}"/>
+		</Sequence>
+	</BehaviorTree>
+</root>
+
+
+
+
+<!-- <root main_tree_to_execute ="Main_Tree">
+	<BehaviorTree ID="Main_Tree">
+		<Sequence>
+			<Action ID="PrintMsg" message="Starting tree"/>
+			<Fallback>
+				<Action ID="AddTwo" service_name="tutorials_btros/add_two"  first="{first}" second="{second}" sum='{sum}' />
+				<ForceFailure>
+					<Sequence>
+						<Action ID="PrintMsg" message="You entered an input lower than the threshold!"/>
+						<Action ID="PrintValue" value="{sum}"/>
+					</Sequence>
+				</ForceFailure>
+			</Fallback>
+			<Action ID="PrintMsg" message="You entered an input higher than the threshold!"/>
+			<Action ID="PrintValue" value="{sum}"/>
+		</Sequence>
+	</BehaviorTree>
+</root> -->
+
+
+<!-- <root main_tree_to_execute ="Main_Tree">
+	<BehaviorTree ID="Main_Tree">
+		<Sequence>
+			<Action ID="PrintMsg" message="Starting tree"/>
+			<Fallback>
+				<Action ID="CompareValues" service_name="tutorials_btros/compare_values"  value1="{value1}" value2="{value2}" />
+				<ForceFailure>
+					<Sequence>
+						<Action ID="PrintMsg" message="You entered an input lower than the threshold!"/>
+						<Action ID="PrintValue" value="{value1}"/>
+					</Sequence>
+				</ForceFailure>
+			</Fallback>
+			<Action ID="PrintMsg" message="You entered an input higher than the threshold!"/>
+			<Action ID="PrintValue" value="{value1}"/>
+		</Sequence>
+	</BehaviorTree>
+</root> -->
