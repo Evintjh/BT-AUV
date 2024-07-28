@@ -3,13 +3,12 @@
   <version>0.0.1</version>
   <description> tutorials to learn how to use the BehaviorTree.ROS package  </description>
 
-  <maintainer email="oriol.ruiz.celada@estudiantat.upc.edu">Oriol Ruiz</maintainer>
-  <maintainer email="jan.rosell@upc.edu">Jan Rosell</maintainer>
+  <maintainer email="evintjh@gmail.com">Oriol Ruiz</maintainer>
+
 
   <license>UPC</license>
 
-  <author>Oriol Ruiz</author>
-  <author>Jan Rosell</author>
+
 
   <build_depend>roscpp</build_depend>
   <build_depend>std_msgs</build_depend>
