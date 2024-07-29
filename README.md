@@ -59,7 +59,7 @@ git clone https://github.com/Evintjh/BT-AUV.git
 
 ## Creating nodes in C++ and interfacing with ROS
 - Refer to sensor_nodes.h and bt_basic_nodes.h for examples.
-- Condition node template
+- __Condition node template:__
 ```
 class ROSObjDetectedStatus : public BT::ConditionNode 
 {
@@ -94,4 +94,84 @@ private:
 	}
 };
 ```
-- Action node template
+- Things to look out for:
+  - ensures that Condition node is only tick if _obj_detection_state_msg.data == true
+```
+    BT::NodeStatus tick() override
+	{
+		ROS_INFO ("Obj detection node running");
+		return (_obj_detection_state_msg.data == true) ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
+	}
+
+```
+    
+
+- __Action node template__
+```
+class ROSArmtrigger: public BT::SyncActionNode {
+  public: ROSArmtrigger(const std::string & name,
+    const BT::NodeConfiguration & config): BT::SyncActionNode(name, config) {
+      arm_trigger_pub = _nh.advertise<std_msgs::Bool>("/ACTION_trigger_arm_pos", 1, true );
+      timer_ = _nh.createTimer(ros::Duration(0.1), &ROSArmtrigger::timerCallback, this);  // Timer to check tick status every second
+
+    }
+
+    BT::NodeStatus tick() override {
+
+      last_tick_time_ = std::chrono::steady_clock::now();
+      arm_trigger.data = true;
+      arm_trigger_pub.publish(arm_trigger);
+      std::cout << "arm trigger publisher success" << std::endl;
+      return BT::NodeStatus::SUCCESS;
+    }
+
+    static BT::PortsList providedPorts() {
+      return {};
+    }
+  private:
+    ros::NodeHandle _nh;
+    ros::Publisher arm_trigger_pub;
+    ros::Timer timer_;
+    std_msgs::Bool arm_trigger;
+    std::chrono::steady_clock::time_point last_tick_time_;
+
+    // if tick not override (node isn't running) in 0.1s, publish false
+    void timerCallback(const ros::TimerEvent &) {
+      auto now = std::chrono::steady_clock::now();
+      auto duration_since_last_tick = std::chrono::duration_cast<std::chrono::seconds>(now - last_tick_time_);
+
+      if (duration_since_last_tick.count() > 0.1) {  // Check if more than 1 second has passed since last tick
+        arm_trigger.data = false;
+        arm_trigger_pub.publish(arm_trigger);
+        std::cout << "centreing publisher timeout, publishing false" << std::endl;
+      }
+    }
+  
+};
+```
+- Things to look out for:
+  - publishes __True__ to the respective ROS node to run if ticked, otherwise publish __False__ if not ticked within 0.1s
+```
+    BT::NodeStatus tick() override {
+
+      last_tick_time_ = std::chrono::steady_clock::now();
+      arm_trigger.data = true;
+      arm_trigger_pub.publish(arm_trigger);
+      std::cout << "arm trigger publisher success" << std::endl;
+      return BT::NodeStatus::SUCCESS;
+    }
+
+```
+```
+    // if tick not override (node isn't running) in 0.1s, publish false
+    void timerCallback(const ros::TimerEvent &) {
+      auto now = std::chrono::steady_clock::now();
+      auto duration_since_last_tick = std::chrono::duration_cast<std::chrono::seconds>(now - last_tick_time_);
+
+      if (duration_since_last_tick.count() > 0.1) {  // Check if more than 1 second has passed since last tick
+        arm_trigger.data = false;
+        arm_trigger_pub.publish(arm_trigger);
+        std::cout << "centreing publisher timeout, publishing false" << std::endl;
+      }
+    }
+```
