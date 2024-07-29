@@ -1,6 +1,6 @@
 <launch>
 
-<!-- <arg name="behaviorTreeFile" default="$(find tutorials_btros)/trees/test_tree_1.xml"/> -->
+<!-- <arg name="behaviorTreeFile" default="$(find tutorials_btros)/trees/test_tree_4.xml"/> -->
 <arg name="behaviorTreeFile" default="$(find tutorials_btros)/trees/mission_planner.xml"/>
 <param name="behaviorTreeFile" value="$(arg behaviorTreeFile)"/>
 <arg name="useGroot" default="1"/>

@@ -3,23 +3,24 @@
 #include <chrono>
 
 //****************************************************************
-// NON-ROS NODES, they are done directly here, they don't require
+// BT ROS ACTION NODES, they are done directly here, they don't require
 // a ROS service or action server
 //****************************************************************
 
 
+//////////////////////////////////////////////////////////////////////////
+// Trigger arm ACTION Node 
+//////////////////////////////////////////////////////////////////////////
 class ROSArmtrigger: public BT::SyncActionNode {
   public: ROSArmtrigger(const std::string & name,
     const BT::NodeConfiguration & config): BT::SyncActionNode(name, config) {
-      arm_trigger_pub = _nh.advertise<std_msgs::Bool>("/ACTION_arm_pos_trigger", 1, true );
-      timer_ = _nh.createTimer(ros::Duration(1.0), &ROSArmtrigger::timerCallback, this);  // Timer to check tick status every second
+      arm_trigger_pub = _nh.advertise<std_msgs::Bool>("/ACTION_trigger_arm_pos", 1, true );
+      timer_ = _nh.createTimer(ros::Duration(0.1), &ROSArmtrigger::timerCallback, this);  // Timer to check tick status every second
 
     }
 
     BT::NodeStatus tick() override {
-      // Optional <double> value = getInput<double>("value");
 
-      // std::cout << "PrintValue: " << value.value() << std::endl;
       last_tick_time_ = std::chrono::steady_clock::now();
       arm_trigger.data = true;
       arm_trigger_pub.publish(arm_trigger);
@@ -41,8 +42,8 @@ class ROSArmtrigger: public BT::SyncActionNode {
     void timerCallback(const ros::TimerEvent &) {
       auto now = std::chrono::steady_clock::now();
       auto duration_since_last_tick = std::chrono::duration_cast<std::chrono::seconds>(now - last_tick_time_);
+
       if (duration_since_last_tick.count() > 0.1) {  // Check if more than 1 second has passed since last tick
-        // std_msgs::Bool centre_target_status;
         arm_trigger.data = false;
         arm_trigger_pub.publish(arm_trigger);
         std::cout << "centreing publisher timeout, publishing false" << std::endl;
@@ -52,17 +53,19 @@ class ROSArmtrigger: public BT::SyncActionNode {
 };
 
 
+//////////////////////////////////////////////////////////////////////////
+// Target Search ACTION Node 
+//////////////////////////////////////////////////////////////////////////
 class ROSTargetSearch: public BT::SyncActionNode {
   public: ROSTargetSearch(const std::string & name,
     const BT::NodeConfiguration & config): BT::SyncActionNode(name, config) {
-      search_status_pub = _nh.advertise<std_msgs::Bool>("/ACTION_search_status", 1, true );
+      search_status_pub = _nh.advertise<std_msgs::Bool>("/ACTION_search", 1, true );
+      timer_ = _nh.createTimer(ros::Duration(0.1), &ROSTargetSearch::timerCallback, this);  // Timer to check tick status every second
     }
 
     BT::NodeStatus tick() override {
-      // Optional <double> value = getInput<double>("value");
 
-      // std::cout << "PrintValue: " << value.value() << std::endl;
-      std_msgs::Bool search_status;
+      last_tick_time_ = std::chrono::steady_clock::now();
       search_status.data = true;
       search_status_pub.publish(search_status);
       std::cout << "search publisher success" << std::endl;
@@ -75,22 +78,39 @@ class ROSTargetSearch: public BT::SyncActionNode {
   private:
     ros::NodeHandle _nh;
     ros::Publisher search_status_pub;
+    std_msgs::Bool search_status;
+    ros::Timer timer_;
+    std::chrono::steady_clock::time_point last_tick_time_;
+
+
+    // if tick not override (node isn't running) in 0.1s, publish false
+    void timerCallback(const ros::TimerEvent &) {
+      auto now = std::chrono::steady_clock::now();
+      auto duration_since_last_tick = std::chrono::duration_cast<std::chrono::seconds>(now - last_tick_time_);
+
+      if (duration_since_last_tick.count() > 0.1) {  // Check if more than 1 second has passed since last tick
+        search_status.data = false;
+        search_status_pub.publish(search_status);
+        std::cout << "centreing publisher timeout, publishing false" << std::endl;
+      }
+    }
   
 };
 
-// built in timer to publish False for condition
+
+//////////////////////////////////////////////////////////////////////////
+// Target Centreing ACTION Node 
+//////////////////////////////////////////////////////////////////////////
 class ROSTargetCentreing: public BT::SyncActionNode {
   public:
     ROSTargetCentreing(const std::string &name, const BT::NodeConfiguration &config)
         : BT::SyncActionNode(name, config), last_tick_time_(std::chrono::steady_clock::now()) {
-      centre_target_status_pub = _nh.advertise<std_msgs::Bool>("/ACTION_centre_target_status", 1, true);
-      search_target_status_sub = _nh.subscribe("/CONDITION_search_status", 100, &ROSTargetCentreing::SearchStatusCallBack, this);
-      timer_ = _nh.createTimer(ros::Duration(1.0), &ROSTargetCentreing::timerCallback, this);  // Timer to check tick status every second
+      centre_target_status_pub = _nh.advertise<std_msgs::Bool>("/ACTION_centre_target", 1, true);
+      timer_ = _nh.createTimer(ros::Duration(0.1), &ROSTargetCentreing::timerCallback, this);  // Timer to check tick status every second
     }
 
     BT::NodeStatus tick() override {
       last_tick_time_ = std::chrono::steady_clock::now();
-      // std_msgs::Bool centre_target_status;
       centre_target_status.data = true;
       centre_target_status_pub.publish(centre_target_status);
       std::cout << "centreing publisher success" << std::endl;
@@ -104,64 +124,23 @@ class ROSTargetCentreing: public BT::SyncActionNode {
   private:
     ros::NodeHandle _nh;
     ros::Publisher centre_target_status_pub;
-    ros::Subscriber search_target_status_sub;
     ros::Timer timer_;
-    std_msgs::Bool search_status_msg;
     std::chrono::steady_clock::time_point last_tick_time_;
     std_msgs::Bool centre_target_status;
 
-
-    void SearchStatusCallBack(const std_msgs::Bool::ConstPtr &msg) {
-      search_status_msg = *msg;
-    }
 
     // if tick not override (node isn't running) in 0.1s, publish false
     void timerCallback(const ros::TimerEvent &) {
       auto now = std::chrono::steady_clock::now();
       auto duration_since_last_tick = std::chrono::duration_cast<std::chrono::seconds>(now - last_tick_time_);
+
       if (duration_since_last_tick.count() > 0.1) {  // Check if more than 1 second has passed since last tick
-        // std_msgs::Bool centre_target_status;
         centre_target_status.data = false;
         centre_target_status_pub.publish(centre_target_status);
         std::cout << "centreing publisher timeout, publishing false" << std::endl;
       }
     }
   };
-
-
-// class ROSTargetCentreing: public BT::SyncActionNode {
-//   public: ROSTargetCentreing(const std::string & name,
-//     const BT::NodeConfiguration & config): BT::SyncActionNode(name, config) {
-//       centre_target_status_pub = _nh.advertise<std_msgs::Bool>("/ACTION_centre_target_status", 1, true );
-//       search_target_status_sub = _nh.subscribe("/CONDITION_search_status", 100, &ROSTargetCentreing::SearchStatusCallBack, this );
-//     }
-
-//     BT::NodeStatus tick() override {
-//       // Optional <double> value = getInput<double>("value");
-
-//       // std::cout << "PrintValue: " << value.value() << std::endl;
-//       std_msgs::Bool centre_target_status;
-//       centre_target_status.data = true;
-//       centre_target_status_pub.publish(centre_target_status);
-//       std::cout << "centreing publisher success" << std::endl;
-//       return BT::NodeStatus::SUCCESS;
-//     }
-
-//     static BT::PortsList providedPorts() {
-//       return {};
-//     }
-//   private:
-//     ros::NodeHandle _nh;
-//     ros::Publisher centre_target_status_pub;
-//     ros::Subscriber search_target_status_sub;
-//     std_msgs::Bool search_status_msg;
-
-//     void SearchStatusCallBack(const std_msgs::Bool::ConstPtr& msg){
-//       search_status_msg = *msg;
-//     }
-  
-// };
-
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -102,12 +102,6 @@ public:
 	BT::ConditionNode(name, config)
 	{
 		_obj_detection_state_sub = _nh.subscribe("/CONDITION_obj_detection_status", 100, &ROSObjDetectedStatus::ObjDetectedCallback, this );
-		// _battery_state_msg = sensor_msgs::BatteryState();
-		// _battery_state_msg.percentage = 1.0;
-		// YAML::Node test = YAML::LoadFile("/home/evintjh/catkin_ws/src/tutorials_behaviortreeros/param/bt_goals.yaml");
-        // L_threshold = test["lower threshold"].as<float>();
-        // std::ofstream fout("/home/evintjh/catkin_ws/src/tutorials_behaviortreeros/param/bt_goals.yaml");
-        // fout << test;
     }
 
     BT::NodeStatus tick() override
@@ -142,12 +136,6 @@ public:
 	BT::ConditionNode(name, config)
 	{
 		_centreing_state_sub = _nh.subscribe("/CONDITION_centreing_status", 100, &ROSCentredStatus::CentredStatusCallback, this );
-		// _battery_state_msg = sensor_msgs::BatteryState();
-		// _battery_state_msg.percentage = 1.0;
-		// YAML::Node test = YAML::LoadFile("/home/evintjh/catkin_ws/src/tutorials_behaviortreeros/param/bt_goals.yaml");
-        // L_threshold = test["lower threshold"].as<float>();
-        // std::ofstream fout("/home/evintjh/catkin_ws/src/tutorials_behaviortreeros/param/bt_goals.yaml");
-        // fout << test;
     }
 
     BT::NodeStatus tick() override
