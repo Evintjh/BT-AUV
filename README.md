@@ -14,13 +14,13 @@
 
 
 ## Commonly-used nodes
-- Reactive Fallback: Constantly checks condition node on the left for any changes in state. Fallback will be ignored if there's change in condition node state. If resort to Fallback action, tick will not proceed to other nodes on the right.
+- Reactive Fallback: Constantly checks condition node on the left for any changes in state. If condition fails, then fallback action.
 - Reactive Sequence: Constantly checks noded on the left for any changes in state. Restarts from the front if sequence is completed.
 - Inverter: Reverse Success to Failure, and vice versa.
 - Condition: Self-explanatory
 - Action: Self-explanatory
 - Sequence: Runs through all the nodes and does not recheck initial nodes. Restarts from the front if sequence is completed. 
-- Fallback: Only checks on Condition node once at first. If resort to Fallback action, tick will not proceed to other nodes on the right.
+- Fallback: Only checks on Condition node once at first. If condition fails, then fallback action.
   
 ## Installation
 - This repo uses Behavior Tree v3 and Groot 1. The versions have been sorted for you, so just simply clone repo.
