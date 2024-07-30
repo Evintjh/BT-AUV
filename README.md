@@ -7,8 +7,8 @@
 - https://www.behaviortree.dev
 - Colour Scheme:
   - Green: Ticked
-  - Blue: Waiting
   - Orange: Running
+  - Blue: Waiting (occurs if the previous node is still running, eg. action server)
   - Red: Fail
 ![Screenshot from 2024-07-31 02-43-44](https://github.com/user-attachments/assets/2b684d9f-7365-4d67-9e57-16cddde6e3ae)
 
