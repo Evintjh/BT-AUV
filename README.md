@@ -27,3 +27,4 @@ git clone https://github.com/Evintjh/BT-AUV.git
 roslaunch tutorials_btros bt_main.launch
 ```
 - in __bt_main.launch__, switch the tree to other trees found in __/tutorials_behaviortreeros/trees/__ to learn how do each type of nodes work
+- tree 4 demonstrates preemption property of action server
