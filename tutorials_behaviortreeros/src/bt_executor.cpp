@@ -1,4 +1,3 @@
-#include "sensor_nodes.h"
 #include <ros/ros.h>
 #include <ros/package.h>
 
@@ -11,7 +10,6 @@
 #include <bt_service_node_comparevalues.h>
 #include <bt_service_node_addtwo.h>
 #include <bt_basic_nodes.h>
-#include <iostream>
 
 using namespace BT;
 
@@ -58,17 +56,10 @@ int main(int argc, char ** argv) {
 
   //register all the nodes into the BT factory
   BehaviorTreeFactory factory;
-  std::cout << "starting tree" <<std::endl;
   factory.registerNodeType < PrintValue > ("PrintValue");
   factory.registerNodeType < PrintMsg > ("PrintMsg");
   factory.registerNodeType < Sleep > ("Sleep");
   factory.registerNodeType < UpdateTree > ("UpdateTree");
-  std::cout << "starting battery" <<std::endl;
-
-  factory.registerNodeType <BatteryCondition>("BatteryCondition");
-  factory.registerNodeType <ROSTargetSearch>("SearchingTarget");
-  // factory.registerNodeType <ROSTargetCentreing>("CentreingToTarget");
-  // factory.registerNodeType <BatteryCondition_charging>("BatteryCondition_charging");
 
   //Actions
   RegisterRosAction < DummyServer > (factory, "Dummy", nh);
@@ -94,19 +85,13 @@ int main(int argc, char ** argv) {
 
 
   ros::service::waitForService("tutorials_btros/add_two", ros::Duration(5));
-  std::cout << "add_two service up" <<std::endl;
-
   ros::service::waitForService("tutorials_btros/is_this_greater_than", ros::Duration(5));
-  std::cout << "is_this_greater_than service up" <<std::endl;
-
   ros::service::waitForService("tutorials_btros/compare_values", ros::Duration(5));
-  std::cout << "compare_values service up" <<std::endl;
-
 
   //while (ros::ok() && (status == NodeStatus::IDLE || status == NodeStatus::RUNNING)) {
   while (ros::ok() ) {
     std::cout<<"running..."<<std::endl;
-    ros::spinOnce();
+
     if (_switch_bt) {
           _switch_bt = false;
           std::cout << "file is updated " << std::endl;
@@ -121,9 +106,8 @@ int main(int argc, char ** argv) {
           sleep_time.sleep();
     }
     else {
-        std::cout << "Tick original "  << std::endl;
+      //std::cout << "Tick original "  << std::endl;
         status = tree.tickRoot();
-        std::cout << "checking tick "  << std::endl;
         sleep_time.sleep();
     }
 

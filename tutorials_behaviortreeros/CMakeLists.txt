@@ -66,9 +66,9 @@ add_dependencies(bt_executor ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORT
 target_link_libraries(bt_executor yaml-cpp ${catkin_LIBRARIES} )
 ##
 
-add_executable(mission_planner_bt src/mission_planner_bt_main.cpp)
-add_dependencies(mission_planner_bt ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(mission_planner_bt ${catkin_LIBRARIES} )
+# add_executable(mission_planner_bt src/mission_planner_bt_main.cpp)
+# add_dependencies(mission_planner_bt ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# target_link_libraries(mission_planner_bt ${catkin_LIBRARIES} )
 
 add_executable(ros_service_server src/ros_service_server.cpp)
 add_dependencies(ros_service_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

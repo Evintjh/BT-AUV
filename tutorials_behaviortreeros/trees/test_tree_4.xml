@@ -7,7 +7,6 @@
 		 	<SetBlackboard output_key="thresholdcounter" value="20"/>
 		 	<SetBlackboard output_key="maxcounter" value="40"/>
 		 	<Action ID="PrintMsg" message="Starting tree"/>
-			<Action ID="SearchingTarget"/>
 		 	<ReactiveFallback>
 			  <!-- When the condition changes its state from FAILURE to SUCCESS the counter DummyAction will stop counting-->
 				<Inverter>
@@ -19,7 +18,7 @@
 			  </Inverter>
 		 		<Action ID="Dummy" server_name="/tutorials_btros/dummy" total_time="{maxcounter}"  period="1" />
 			</ReactiveFallback>
-	    	<Action ID="PrintMsg" message="Counter result is"/>
+	    <Action ID="PrintMsg" message="Counter result is"/>
 			<Action ID="PrintValue" value="{counter}"/>
 		</Sequence>
 	</BehaviorTree>
