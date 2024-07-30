@@ -5,6 +5,13 @@
 
 ## Tutorials on Behavior Tree
 - https://www.behaviortree.dev
+- Colour Scheme:
+  - Green: Ticked
+  - Blue: Waiting
+  - Orange: Running
+  - Red: Fail
+![Screenshot from 2024-07-31 02-43-44](https://github.com/user-attachments/assets/2b684d9f-7365-4d67-9e57-16cddde6e3ae)
+
 
 ## Commonly-used nodes
 - Reactive Fallback: Constantly checks condition node on the left for any changes in state. Fallback will be ignored if there's change in condition node state. If resort to Fallback action, tick will not proceed to other nodes on the right.
