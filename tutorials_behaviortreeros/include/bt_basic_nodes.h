@@ -143,6 +143,12 @@ class ROSTargetCentreing: public BT::SyncActionNode {
   };
 
 
+//****************************************************************
+// BT ACTION NODES WITHOUT ROS, they are done directly here, they don't require
+// a ROS service or action server
+//****************************************************************
+
+
 //////////////////////////////////////////////////////////////////////////
 // Simple Node to print a number
 //////////////////////////////////////////////////////////////////////////
