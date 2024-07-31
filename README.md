@@ -2,6 +2,7 @@
 - Motivation behind Behavior Tree Framework:
   - Behavior Tree operates in a hierarchical manner, which means that certain nodes would take priority over others. Allows operation of robots in a safe and logical manner.
   - Promotes easier debugging since you can tell which part of the BT is experiencing errors and you can debug the respective node.
+  - Nodes are modular and can be reused for other parts of the tree.
 ![Screenshot from 2024-07-30 00-04-50](https://github.com/user-attachments/assets/6c6167df-c791-4df1-88e0-fe329c8dcb20)
 [Screencast from 21-07-24 23:44:40.webm](https://github.com/user-attachments/assets/f751d960-1441-4d12-adfc-38dd3d516f91)
 
