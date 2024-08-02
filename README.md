@@ -1,4 +1,4 @@
-# Mission Planner Behavior Tree
+# Mission Planner Behavior Tree with ROS Topics
 - Motivation behind Behavior Tree Framework:
   - Behavior Tree operates in a hierarchical manner, which means that certain nodes would take priority over others. Allows operation of robots in a safe and logical manner.
   - Promotes easier debugging since you can tell which part of the BT is experiencing errors and you can debug the respective node.
